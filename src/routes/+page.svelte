@@ -16,11 +16,13 @@
 	>
 		<img src={logo} alt="Skill Zone Hockey Logo" class="mb-6 h-24" />
 
-		<h1 class="mb-5 text-9xl font-bold text-white uppercase">Jau drīzumā!</h1>
+		<h1 class="mb-5 text-5xl font-bold text-white uppercase md:text-9xl">Jau drīzumā!</h1>
 		<p class="mb-5 text-3xl text-white">
-			Jau pavisam drīz atvērsies jaunākā hokeja trenniņu arēna ogrē!
+			Jau pavisam drīz atvērsies lielākā mākslīgā ledus hokeja treniņu arēna Baltijā!
 		</p>
 		<p class="text-3xl text-white">Vairāk info:</p>
-		<p class="text-3xl text-white">+371 28309220 | +371 26463175| +371 28380420</p>
+		<p class="flex flex-col text-3xl text-white md:flex-row md:gap-6">
+			<span>+371 28309220</span> <span>+371 26463175</span> <span>+371 28380420</span>
+		</p>
 	</div>
 </section>
