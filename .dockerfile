@@ -1,20 +1,16 @@
-# --- Stage 1: Build ---
-FROM node:22.12.0 AS build
+FROM node:22-alpine AS builder
 WORKDIR /app
+COPY package*.json ./
+RUN npm ci
 COPY . .
+RUN npm run build
+RUN npm prune --production
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN pnpm install --frozen-lockfile
-RUN pnpm run build
-
-# --- Stage 2: Serve static files directly ---
-FROM busybox:stable-glibc
-
+FROM node:22-alpine
 WORKDIR /app
-COPY --from=build /app/build ./
-
-# Coolify’s Caddy will serve these files automatically when port 80 is exposed
-EXPOSE 80
-
-# Start a simple HTTP file server (for local testing / Coolify health checks)
-CMD ["busybox", "httpd", "-f", "-v", "-p", "80"]
+COPY --from=builder /app/build build/
+COPY --from=builder /app/node_modules node_modules/
+COPY package.json .
+EXPOSE 3000
+ENV NODE_ENV=production
+CMD [ "node", "build" ]
