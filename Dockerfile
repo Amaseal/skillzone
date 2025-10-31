@@ -1,10 +1,15 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY . .
-RUN npm run build
-RUN npm prune --production
+RUN pnpm run build
+RUN pnpm prune --prod
 
 FROM node:22-alpine
 WORKDIR /app
