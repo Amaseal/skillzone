@@ -1,5 +1,5 @@
 <script>
-	import logo from '$lib/assets/skill_zone_hokejs_logo.png';
+	import logo from '$lib/assets/skillazone.svg';
 	import background from '$lib/assets/463871-top-ice-hockey-backgrounds-1920x1200-ipad-pro.jpg';
 </script>
 
@@ -17,8 +17,10 @@
 		<img src={logo} alt="Skill Zone Hockey Logo" class="mb-6 h-24" />
 
 		<h1 class="mb-5 text-9xl font-bold text-white uppercase">Jau drīzumā!</h1>
-		<p class="text-3xl text-white">
+		<p class="mb-5 text-3xl text-white">
 			Jau pavisam drīz atvērsies jaunākā hokeja trenniņu arēna ogrē!
 		</p>
+		<p class="text-3xl text-white">Vairāk info:</p>
+		<p class="text-3xl text-white">+371 28309220 | +371 26463175| +371 28380420</p>
 	</div>
 </section>
