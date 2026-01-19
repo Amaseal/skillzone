@@ -1,21 +1,23 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-# Install tools and Python (Fix #1 from before)
-RUN apk add --no-cache python3 make g++ && ln -sf python3 /usr/bin/python
+# 1. Install build tools (build-base covers make/g++/gcc)
+RUN apk add --no-cache python3 build-base && ln -sf python3 /usr/bin/python
 
 RUN npm install -g pnpm
 COPY package.json pnpm-lock.yaml ./
 
-# Install deps (Fix #2 from before)
-RUN pnpm install --frozen-lockfile --config.build-from-source=better-sqlite3
+# 2. Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# 3. CRITICAL FIX: Explicitly force a rebuild of better-sqlite3
+# This ensures the binary is compiled for this exact Alpine environment
+RUN pnpm rebuild better-sqlite3
 
 COPY . .
 
-# --- NEW FIX START ---
-# Create the data directory so the build doesn't crash when initializing the DB
+# 4. Create the data directory (Keep this!)
 RUN mkdir -p data
-# --- NEW FIX END ---
 
 RUN pnpm run build
 RUN pnpm prune --prod
@@ -23,7 +25,7 @@ RUN pnpm prune --prod
 FROM node:22-alpine
 WORKDIR /app
 
-# Runtime dependencies (Fix #3 from before)
+# 5. Runtime dependencies
 RUN apk add --no-cache libstdc++
 
 COPY --from=builder /app/build build/
