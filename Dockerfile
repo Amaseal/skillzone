@@ -1,36 +1,48 @@
-FROM node:22-alpine AS builder
+# Use Debian Slim (better compatibility for C++ modules like better-sqlite3)
+FROM node:22-slim AS builder
 WORKDIR /app
 
-# 1. Install build tools (build-base covers make/g++/gcc)
-RUN apk add --no-cache python3 build-base && ln -sf python3 /usr/bin/python
+# Install basic build tools (python3, make, g++)
+RUN apt-get update && apt-get install -y python3 make g++
 
 RUN npm install -g pnpm
+
+# Force pnpm to create a flat node_modules folder (fixes Docker copying issues)
+RUN echo "node-linker=hoisted" > .npmrc
+
 COPY package.json pnpm-lock.yaml ./
 
-# 2. Install dependencies
+# Install dependencies
+# pnpm will now see the "onlyBuiltDependencies" in package.json and 
+# ACTUALLY run the build scripts for better-sqlite3
 RUN pnpm install --frozen-lockfile
-
-# 3. CRITICAL FIX: Explicitly force a rebuild of better-sqlite3
-# This ensures the binary is compiled for this exact Alpine environment
-RUN pnpm rebuild better-sqlite3
 
 COPY . .
 
-# 4. Create the data directory (Keep this!)
+# Create the data directory to prevent 'CANTOPEN' error
 RUN mkdir -p data
 
 RUN pnpm run build
 RUN pnpm prune --prod
 
-FROM node:22-alpine
+# ---------------------------------------
+# Runner Stage
+# ---------------------------------------
+FROM node:22-slim
 WORKDIR /app
 
-# 5. Runtime dependencies
-RUN apk add --no-cache libstdc++
+# Install runtime libraries for C++ modules
+# libsqlite3-0 is helpful, though better-sqlite3 bundles its own, 
+# but installing standard libs prevents missing shared object errors.
+RUN apt-get update && apt-get install -y libstdc++6 openssl
 
-COPY --from=builder /app/build build/
+# Copy the "hoisted" (flat) node_modules from builder
 COPY --from=builder /app/node_modules node_modules/
+COPY --from=builder /app/build build/
 COPY package.json .
+
+# Create data directory in runner
+RUN mkdir -p data
 
 EXPOSE 3000
 ENV NODE_ENV=production
