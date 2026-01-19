@@ -1,6 +1,9 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
+# Install build dependencies for native modules
+RUN apk add --no-cache python3 make g++
+
 # Install pnpm
 RUN npm install -g pnpm
 
@@ -13,6 +16,9 @@ RUN pnpm prune --prod
 
 FROM node:22-alpine
 WORKDIR /app
+
+# Create data directory for SQLite persistence
+RUN mkdir -p /app/data
 COPY --from=builder /app/build build/
 COPY --from=builder /app/node_modules node_modules/
 COPY package.json .
