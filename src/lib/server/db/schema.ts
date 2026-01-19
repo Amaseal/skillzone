@@ -26,10 +26,14 @@ export const reservations = sqliteTable('reservations', {
 	date: text('date').notNull(), // ISO YYYY-MM-DD
 	time: text('time').notNull(), // e.g. "14:00"
 	duration: integer('duration').notNull().default(1), // Number of consecutive hours (1, 2, 3, etc.)
-	productId: integer('product_id').notNull(), // References products.id
+	productId: integer('product_id')
+		.notNull()
+		.references(() => products.id, { onDelete: 'cascade' }), // References products.id
 	totalPrice: integer('total_price').notNull(), // Calculated total in cents
 	zones: text('zones', { mode: 'json' }).$type<number[]>().notNull().default([]), // Array of zone IDs [1..8]
-	status: text('status', { enum: ['pending', 'paid', 'cancelled'] }).default('pending').notNull(),
+	status: text('status', { enum: ['pending', 'paid', 'cancelled'] })
+		.default('pending')
+		.notNull(),
 	stripeSessionId: text('stripe_session_id').unique(),
 	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });

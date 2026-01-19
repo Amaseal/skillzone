@@ -5,16 +5,16 @@ import { eq } from 'drizzle-orm';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async () => {
-  try {
-    const activeProducts = await db
-      .select()
-      .from(products)
-      .where(eq(products.active, true))
-      .orderBy(products.sortOrder);
+	try {
+		const activeProducts = await db
+			.select()
+			.from(products)
+			.where(eq(products.active, true))
+			.orderBy(products.sortOrder);
 
-    return json(activeProducts);
-  } catch (err: any) {
-    console.error('Products fetch error:', err);
-    return json({ error: err.message }, { status: 500 });
-  }
+		return json(activeProducts);
+	} catch (err: any) {
+		console.error('Products fetch error:', err);
+		return json({ error: err.message }, { status: 500 });
+	}
 };

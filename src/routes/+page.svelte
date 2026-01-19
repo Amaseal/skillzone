@@ -34,10 +34,7 @@
 	}
 </script>
 
-<ReservationModal
-	bind:show={showModal}
-	product={selectedProduct}
-/>
+<ReservationModal bind:show={showModal} product={selectedProduct} />
 
 <svelte:head>
 	<title>SkillZone.lv — hokeja iemaņu treniņu zāle</title>
@@ -135,7 +132,9 @@
 					<PriceCard
 						title={product.name}
 						details="1h"
-						price={product.isWholeField ? `${product.pricePerZone / 100},-` : `${product.pricePerZone / 100},- / zona`}
+						price={product.isWholeField
+							? `${product.pricePerZone / 100},-`
+							: `${product.pricePerZone / 100},- / zona`}
 						bullets={product.description ? [product.description] : []}
 						highlight={product.isWholeField}
 						productId={product.id}
@@ -190,8 +189,6 @@
 			</div>
 		</div>
 	</section>
-
-
 
 	<!-- GALERIJA -->
 	<section id="galerija" class="mx-auto max-w-7xl px-4 py-16 md:py-20">

@@ -13,7 +13,6 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-
 <div
 	class={'rounded-2xl border p-6 shadow-sm ' +
 		(highlight
@@ -58,7 +57,7 @@
 		{#if productId}
 			<div class="mt-6 flex justify-center">
 				<button
-					class="w-full rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 hover:shadow-lg active:scale-95 cursor-pointer"
+					class="w-full cursor-pointer rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 hover:shadow-lg active:scale-95"
 					on:click={() => dispatch('buy', { productId })}
 				>
 					Rezervēt

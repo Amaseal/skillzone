@@ -10,19 +10,19 @@ let db: ReturnType<typeof drizzle>;
 
 // Only connect to DB if we are NOT building the app
 if (!building) {
-    if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
+	if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
 
-    // Remove 'file:' prefix if it exists (better-sqlite3 doesn't like it)
-    const path = env.DATABASE_URL.replace('file:', '');
+	// Remove 'file:' prefix if it exists (better-sqlite3 doesn't like it)
+	const path = env.DATABASE_URL.replace('file:', '');
 
-    const client = new Database(path);
+	const client = new Database(path);
 
-    db = drizzle(client, { schema });
+	db = drizzle(client, { schema });
 
-    // Automatically run migrations on startup
-    console.log('Running migrations...');
-    migrate(db, { migrationsFolder: 'drizzle' });
-    console.log('Migrations applied successfully.');
+	// Automatically run migrations on startup
+	console.log('Running migrations...');
+	migrate(db, { migrationsFolder: 'drizzle' });
+	console.log('Migrations applied successfully.');
 }
 
 export { db };

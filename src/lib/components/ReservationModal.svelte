@@ -44,17 +44,17 @@
 	}
 
 	// Calculate total price dynamically (base price × duration)
-	$: totalPrice = product && selectedZones.length > 0
-		? isWholeField
-			? (product.pricePerZone / 100) * duration // Fixed price for whole field × duration
-			: (product.pricePerZone / 100) * selectedZones.length * duration // Price per zone × duration
-		: 0;
+	$: totalPrice =
+		product && selectedZones.length > 0
+			? isWholeField
+				? (product.pricePerZone / 100) * duration // Fixed price for whole field × duration
+				: (product.pricePerZone / 100) * selectedZones.length * duration // Price per zone × duration
+			: 0;
 
 	let timeSlots: string[] = [];
 	let workingHoursInfo = '';
 
 	async function checkAvailability() {
-
 		if (!date) return;
 		loadingSlots = true;
 		try {
@@ -62,21 +62,21 @@
 			const data = await res.json();
 			availability = data.availability || {};
 			console.log('[ReservationModal] Received availability:', availability);
-			
+
 			// Set time slots from working hours
 			if (data.workingHours) {
 				const { start, end } = data.workingHours;
 				timeSlots = [];
 				const startHour = parseInt(start.split(':')[0]);
 				const endHour = parseInt(end.split(':')[0]);
-				
+
 				for (let h = startHour; h < endHour; h++) {
 					timeSlots.push(`${h.toString().padStart(2, '0')}:00`);
 				}
 				workingHoursInfo = `Rezervācijas iespējams veikt darba laikā (${start} - ${end}).`;
 			}
 			console.log('[ReservationModal] Final TimeSlots:', timeSlots);
-			
+
 			time = ''; // Reset time selection
 			if (!isWholeField) selectedZones = []; // Reset zones on date change for individual
 		} catch (e) {
@@ -109,14 +109,14 @@
 
 	function isZoneDisabled(zone: number) {
 		if (!time) return true;
-		
+
 		// Check availability for all consecutive slots
 		const consecutiveSlots = getConsecutiveSlots(time, duration);
 		for (const timeSlot of consecutiveSlots) {
 			const booked = availability[timeSlot] || [];
 			if (booked.includes(zone)) return true;
 		}
-		
+
 		return false;
 	}
 
@@ -182,18 +182,18 @@
 {#if show && product}
 	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
 		transition:fade
 		onclick={close}
-        role="button"
-        tabindex="0"
-        onkeydown={(e) => e.key === 'Escape' && close()}
+		role="button"
+		tabindex="0"
+		onkeydown={(e) => e.key === 'Escape' && close()}
 	>
 		<div
-			class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto"
+			class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-xl"
 			transition:scale
 			onclick={(e) => e.stopPropagation()}
-            role="presentation"
+			role="presentation"
 		>
 			<div class="mb-6 flex items-center justify-between">
 				<h2 class="text-xl font-bold text-slate-900">Rezervēt: {product.name}</h2>
@@ -204,7 +204,7 @@
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
-						class="w-6 h-6"
+						class="h-6 w-6"
 					>
 						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -212,7 +212,6 @@
 			</div>
 
 			<div class="space-y-4">
-
 				<!-- Date Picker -->
 				<div>
 					<label class="block text-sm font-medium text-slate-700" for="date">Datums</label>
@@ -222,7 +221,7 @@
 						bind:value={date}
 						onchange={checkAvailability}
 						min={new Date().toISOString().split('T')[0]}
-						class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+						class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
 					/>
 				</div>
 
@@ -235,15 +234,16 @@
 								type="button"
 								class={'rounded border py-2 text-sm font-medium transition ' +
 									(duration === hours
-										? 'bg-blue-600 text-white border-blue-600'
-										: 'bg-white text-slate-700 border-slate-300 hover:border-blue-500 hover:text-blue-500')}
+										? 'border-blue-600 bg-blue-600 text-white'
+										: 'border-slate-300 bg-white text-slate-700 hover:border-blue-500 hover:text-blue-500')}
 								onclick={() => {
 									duration = hours;
 									time = ''; // Reset time when duration changes
 									if (!isWholeField) selectedZones = [];
 								}}
 							>
-								{hours} {hours === 1 ? 'stunda' : 'stundas'}
+								{hours}
+								{hours === 1 ? 'stunda' : 'stundas'}
 							</button>
 						{/each}
 					</div>
@@ -253,7 +253,9 @@
 				{#if date}
 					<div>
 						<div class="block text-sm font-medium text-slate-700">Laiks</div>
-						<p class="text-xs text-slate-500 mb-2">Rezervācijas iespējamas veikt darba laikā līdz 21:00.</p>
+						<p class="mb-2 text-xs text-slate-500">
+							Rezervācijas iespējamas veikt darba laikā līdz 21:00.
+						</p>
 						{#if loadingSlots}
 							<p class="text-sm text-slate-500">Meklē brīvos laikus...</p>
 						{:else}
@@ -262,10 +264,10 @@
 									<button
 										class={'rounded border py-2 text-sm font-medium transition ' +
 											(isTimeSlotDisabled(slot)
-												? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+												? 'cursor-not-allowed bg-slate-100 text-slate-400'
 												: time === slot
-												? 'bg-blue-600 text-white border-blue-600'
-												: 'bg-white text-slate-700 border-slate-300 hover:border-blue-500 hover:text-blue-500')}
+													? 'border-blue-600 bg-blue-600 text-white'
+													: 'border-slate-300 bg-white text-slate-700 hover:border-blue-500 hover:text-blue-500')}
 										disabled={isTimeSlotDisabled(slot)}
 										onclick={() => {
 											time = slot;
@@ -284,16 +286,16 @@
 				{#if time && !isWholeField}
 					<div>
 						<label class="block text-sm font-medium text-slate-700">Zonu izvēle</label>
-						<p class="text-xs text-slate-500 mb-2">Izvēlieties vienu vai vairākas zonas.</p>
+						<p class="mb-2 text-xs text-slate-500">Izvēlieties vienu vai vairākas zonas.</p>
 						<div class="grid grid-cols-4 gap-2">
 							{#each allZones as zone}
 								<button
 									class={'rounded border py-2 text-sm font-medium transition ' +
 										(isZoneDisabled(zone)
-											? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+											? 'cursor-not-allowed bg-slate-100 text-slate-400'
 											: selectedZones.includes(zone)
-											? 'bg-blue-600 text-white border-blue-600'
-											: 'bg-white text-slate-700 border-slate-300 hover:border-blue-500 hover:text-blue-500')}
+												? 'border-blue-600 bg-blue-600 text-white'
+												: 'border-slate-300 bg-white text-slate-700 hover:border-blue-500 hover:text-blue-500')}
 									disabled={isZoneDisabled(zone)}
 									onclick={() => toggleZone(zone)}
 								>
@@ -306,25 +308,28 @@
 
 				<!-- Zone Info Display (For full field) -->
 				{#if time && isWholeField}
-					<div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-sm">
+					<div class="rounded-lg bg-blue-50 p-3 text-sm text-blue-800">
 						Tiek rezervēts viss laukums (Zonas 1-8).
 					</div>
 				{/if}
 
 				<!-- Price Display -->
 				{#if selectedZones.length > 0}
-					<div class="p-4 bg-slate-50 rounded-lg">
-						<div class="flex justify-between items-center">
+					<div class="rounded-lg bg-slate-50 p-4">
+						<div class="flex items-center justify-between">
 							<span class="text-sm font-medium text-slate-700">Kopējā cena:</span>
 							<span class="text-2xl font-bold text-slate-900">{totalPrice.toFixed(2)} EUR</span>
 						</div>
 						{#if !isWholeField}
-							<p class="text-xs text-slate-500 mt-1">
-								{selectedZones.length} zona{selectedZones.length > 1 ? 's' : ''} × {product.pricePerZone / 100} EUR × {duration} {duration === 1 ? 'stunda' : 'stundas'}
+							<p class="mt-1 text-xs text-slate-500">
+								{selectedZones.length} zona{selectedZones.length > 1 ? 's' : ''} × {product.pricePerZone /
+									100} EUR × {duration}
+								{duration === 1 ? 'stunda' : 'stundas'}
 							</p>
 						{:else}
-							<p class="text-xs text-slate-500 mt-1">
-								{product.pricePerZone / 100} EUR × {duration} {duration === 1 ? 'stunda' : 'stundas'}
+							<p class="mt-1 text-xs text-slate-500">
+								{product.pricePerZone / 100} EUR × {duration}
+								{duration === 1 ? 'stunda' : 'stundas'}
 							</p>
 						{/if}
 					</div>
@@ -338,7 +343,7 @@
 							id="name"
 							type="text"
 							bind:value={name}
-							class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+							class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
 						/>
 					</div>
 					<div>
@@ -347,7 +352,7 @@
 							id="email"
 							type="email"
 							bind:value={email}
-							class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+							class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
 						/>
 					</div>
 				</div>
@@ -356,7 +361,7 @@
 					<button
 						onclick={handleSubmit}
 						disabled={loading || !time || selectedZones.length === 0}
-						class="w-full rounded-xl bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+						class="w-full rounded-xl bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						{loading ? 'Apstrādā...' : `Turpināt uz apmaksu (${totalPrice.toFixed(2)} EUR)`}
 					</button>

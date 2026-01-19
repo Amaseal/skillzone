@@ -5,9 +5,7 @@
 <div class="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
 	<div class="w-full max-w-md space-y-8 rounded-2xl bg-white p-10 shadow-xl">
 		<div>
-			<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900">
-				Admin Login
-			</h2>
+			<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900">Admin Login</h2>
 		</div>
 		<form class="mt-8 space-y-6" method="POST" action="?/login">
 			<div class="-space-y-px rounded-md shadow-sm">
@@ -18,7 +16,7 @@
 						name="password"
 						type="password"
 						required
-						class="relative block w-full rounded-md border-0 py-1.5 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 p-3"
+						class="relative block w-full rounded-md border-0 p-3 py-1.5 text-slate-900 ring-1 ring-slate-300 ring-inset placeholder:text-slate-400 focus:z-10 focus:ring-2 focus:ring-blue-600 focus:ring-inset sm:text-sm sm:leading-6"
 						placeholder="Parole"
 					/>
 				</div>

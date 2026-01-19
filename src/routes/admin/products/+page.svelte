@@ -45,9 +45,7 @@
 		{/if}
 
 		{#if form?.success}
-			<div class="mb-4 rounded-lg bg-green-50 p-4 text-green-800">
-				Veiksmīgi saglabāts!
-			</div>
+			<div class="mb-4 rounded-lg bg-green-50 p-4 text-green-800">Veiksmīgi saglabāts!</div>
 		{/if}
 
 		<!-- Create Form -->
@@ -57,34 +55,40 @@
 				<form method="POST" action="?/create" class="space-y-4">
 					<div class="grid grid-cols-2 gap-4">
 						<div>
-							<label class="block text-sm font-medium text-slate-700" for="create-name">Nosaukums</label>
+							<label class="block text-sm font-medium text-slate-700" for="create-name"
+								>Nosaukums</label
+							>
 							<input
 								id="create-name"
 								name="name"
 								type="text"
 								required
-								class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+								class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
 							/>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-slate-700" for="create-price">Cena (centi)</label>
+							<label class="block text-sm font-medium text-slate-700" for="create-price"
+								>Cena (centi)</label
+							>
 							<input
 								id="create-price"
 								name="pricePerZone"
 								type="number"
 								required
 								placeholder="1500"
-								class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+								class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
 							/>
 						</div>
 					</div>
 					<div>
-						<label class="block text-sm font-medium text-slate-700" for="create-desc">Apraksts</label>
+						<label class="block text-sm font-medium text-slate-700" for="create-desc"
+							>Apraksts</label
+						>
 						<textarea
 							id="create-desc"
 							name="description"
 							rows="2"
-							class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+							class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
 						></textarea>
 					</div>
 					<div class="flex gap-4">
@@ -112,12 +116,30 @@
 			<table class="min-w-full divide-y divide-slate-200">
 				<thead class="bg-slate-50">
 					<tr>
-						<th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nosaukums</th>
-						<th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Cena</th>
-						<th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Treneris</th>
-						<th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Viss laukums</th>
-						<th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Statuss</th>
-						<th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Darbības</th>
+						<th
+							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-slate-500 uppercase"
+							>Nosaukums</th
+						>
+						<th
+							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-slate-500 uppercase"
+							>Cena</th
+						>
+						<th
+							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-slate-500 uppercase"
+							>Treneris</th
+						>
+						<th
+							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-slate-500 uppercase"
+							>Viss laukums</th
+						>
+						<th
+							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-slate-500 uppercase"
+							>Statuss</th
+						>
+						<th
+							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-slate-500 uppercase"
+							>Darbības</th
+						>
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-slate-200 bg-white">
@@ -135,7 +157,7 @@
 													type="text"
 													value={product.name}
 													required
-													class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+													class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
 												/>
 											</div>
 											<div>
@@ -145,7 +167,7 @@
 													type="number"
 													value={product.pricePerZone}
 													required
-													class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+													class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
 												/>
 											</div>
 										</div>
@@ -154,20 +176,39 @@
 											<textarea
 												name="description"
 												rows="2"
-												class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
-											>{product.description || ''}</textarea>
+												class="mt-1 block w-full rounded-md border border-slate-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+												>{product.description || ''}</textarea
+											>
 										</div>
 										<div class="flex gap-4">
 											<label class="flex items-center gap-2">
-												<input type="checkbox" name="requiresTrainer" value="true" checked={product.requiresTrainer} class="rounded" />
+												<input
+													type="checkbox"
+													name="requiresTrainer"
+													value="true"
+													checked={product.requiresTrainer}
+													class="rounded"
+												/>
 												<span class="text-sm text-slate-700">Ar treneri</span>
 											</label>
 											<label class="flex items-center gap-2">
-												<input type="checkbox" name="isWholeField" value="true" checked={product.isWholeField} class="rounded" />
+												<input
+													type="checkbox"
+													name="isWholeField"
+													value="true"
+													checked={product.isWholeField}
+													class="rounded"
+												/>
 												<span class="text-sm text-slate-700">Viss laukums</span>
 											</label>
 											<label class="flex items-center gap-2">
-												<input type="checkbox" name="active" value="true" checked={product.active} class="rounded" />
+												<input
+													type="checkbox"
+													name="active"
+													value="true"
+													checked={product.active}
+													class="rounded"
+												/>
 												<span class="text-sm text-slate-700">Aktīvs</span>
 											</label>
 										</div>
@@ -191,35 +232,52 @@
 							</tr>
 						{:else}
 							<tr>
-								<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+								<td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-slate-900">
 									{product.name}
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+								<td class="px-6 py-4 text-sm whitespace-nowrap text-slate-500">
 									{formatPrice(product.pricePerZone)} EUR
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+								<td class="px-6 py-4 text-sm whitespace-nowrap text-slate-500">
 									{product.requiresTrainer ? 'Jā' : 'Nē'}
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+								<td class="px-6 py-4 text-sm whitespace-nowrap text-slate-500">
 									{product.isWholeField ? 'Jā' : 'Nē'}
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
 									<span
-										class={'inline-flex rounded-full px-2 text-xs font-semibold leading-5 ' +
-											(product.active
-												? 'bg-green-100 text-green-800'
-												: 'bg-red-100 text-red-800')}
+										class={'inline-flex rounded-full px-2 text-xs leading-5 font-semibold ' +
+											(product.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')}
 									>
 										{product.active ? 'Aktīvs' : 'Neaktīvs'}
 									</span>
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm">
+								<td class="px-6 py-4 text-sm whitespace-nowrap">
 									<button
 										on:click={() => startEdit(product.id)}
 										class="text-blue-600 hover:text-blue-900"
 									>
 										Rediģēt
 									</button>
+									<form
+										method="POST"
+										action="?/delete"
+										class="inline-block"
+										on:submit|preventDefault={(e) => {
+											if (
+												confirm(
+													'Vai tiešām vēlaties dzēst šo produktu? Tas neatgriezeniski izdzēsīs arī visas saistītās rezervācijas!'
+												)
+											) {
+												e.currentTarget.submit();
+											}
+										}}
+									>
+										<input type="hidden" name="id" value={product.id} />
+										<button type="submit" class="ml-2 text-red-600 hover:text-red-900">
+											Dzēst
+										</button>
+									</form>
 								</td>
 							</tr>
 						{/if}
