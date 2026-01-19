@@ -1,0 +1,1 @@
+ALTER TABLE `reservations` ADD `duration` integer DEFAULT 1 NOT NULL;

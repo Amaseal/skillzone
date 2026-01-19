@@ -7,8 +7,12 @@
 	/** Optional bullet points shown under the price. */
 	export let bullets: string[] = [];
 	/** Currency label under the price. */
-	export let currency: string = 'EUR';
+	export let priceId: string | undefined = undefined;
+	export let productId: number | undefined = undefined;
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 </script>
+
 
 <div
 	class={'rounded-2xl border p-6 shadow-sm ' +
@@ -43,11 +47,23 @@
 		</div>
 
 		<!-- Big centered price -->
+		<!-- Big centered price -->
 		<div class="mt-6 flex flex-col items-center justify-center text-center">
 			<div class="flex items-end gap-2">
-				<p class="text-5xl leading-none font-extrabold text-slate-900">{price}</p>
-				<p class="pb-1 text-sm font-semibold text-slate-800">{currency}</p>
+				<p class="text-4xl leading-none font-extrabold text-slate-900">{price}</p>
+				<p class="pb-1 text-sm font-semibold text-slate-800">EUR</p>
 			</div>
 		</div>
+
+		{#if productId}
+			<div class="mt-6 flex justify-center">
+				<button
+					class="w-full rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 hover:shadow-lg active:scale-95 cursor-pointer"
+					on:click={() => dispatch('buy', { productId })}
+				>
+					Rezervēt
+				</button>
+			</div>
+		{/if}
 	</div>
 </div>

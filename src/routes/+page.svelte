@@ -17,7 +17,27 @@
 		{ label: 'Galerija', href: '#galerija' },
 		{ label: 'Noteikumi', href: '/noteikumi' }
 	];
+
+	import ReservationModal from '$lib/components/ReservationModal.svelte';
+
+	export let data;
+
+	$: products = data.products || [];
+
+	let showModal = false;
+	let selectedProduct: any = null;
+
+	function handleBuy(event: CustomEvent) {
+		const productId = event.detail.productId;
+		selectedProduct = products.find((p: any) => p.id === productId);
+		showModal = true;
+	}
 </script>
+
+<ReservationModal
+	bind:show={showModal}
+	product={selectedProduct}
+/>
 
 <svelte:head>
 	<title>SkillZone.lv — hokeja iemaņu treniņu zāle</title>
@@ -58,7 +78,7 @@
 							href="#cenas"
 							class="inline-flex items-center justify-center rounded-xl bg-lime-400 px-6 py-3.5 text-sm font-semibold text-slate-950 hover:bg-lime-300"
 						>
-							Apskatīt cenas
+							Rezervēt
 						</a>
 						<a
 							href="#kontakti"
@@ -111,27 +131,17 @@
 			<SectionHeading eyebrow="Cenrādis" color="text-white" title="Vienkāršas un skaidras cenas" />
 
 			<div class="mx-auto grid max-w-5xl gap-8 md:grid-cols-3">
-				<PriceCard
-					title="Individuāls treniņš ar treneri"
-					details="1h"
-					price="35,-"
-					bullets={['Laukuma izmērs pēc trenera vajadzībām', 'Trenera samaksa', 'Viss inventārs']}
-				/>
-
-				<PriceCard
-					title="Viss laukums uz stundu"
-					details="1h"
-					price="120,-"
-					highlight={true}
-					bullets={['Pilnais laukums', 'Viss inventārs']}
-				/>
-
-				<PriceCard
-					title="Individuāls treniņš vienam cilvēkam"
-					details="1h"
-					price="15,-"
-					bullets={['Atsevišķi nodalīta treniņu zona', 'Viss inventārs']}
-				/>
+				{#each products as product}
+					<PriceCard
+						title={product.name}
+						details="1h"
+						price={product.isWholeField ? `${product.pricePerZone / 100},-` : `${product.pricePerZone / 100},- / zona`}
+						bullets={product.description ? [product.description] : []}
+						highlight={product.isWholeField}
+						productId={product.id}
+						on:buy={handleBuy}
+					/>
+				{/each}
 			</div>
 		</div>
 	</section>
@@ -181,16 +191,7 @@
 		</div>
 	</section>
 
-	<!-- KALENDĀRS -->
-	<section id="kalendars" class="border-t border-slate-200 bg-slate-50">
-		<div class="mx-auto max-w-7xl px-4 py-16 md:py-20">
-			<SectionHeading
-				eyebrow="Kalendārs"
-				title="Rezervācijas — drīzumā"
-				subtitle="Pavisam drīz varēsi apskatīt pieejamos laikus un rezervēt treniņu tieši šeit."
-			/>
-		</div>
-	</section>
+
 
 	<!-- GALERIJA -->
 	<section id="galerija" class="mx-auto max-w-7xl px-4 py-16 md:py-20">
