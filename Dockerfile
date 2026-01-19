@@ -1,19 +1,21 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-# 1. FIX: Install tools AND create a 'python' symlink (node-gyp often looks for 'python', not 'python3')
+# Install tools and Python (Fix #1 from before)
 RUN apk add --no-cache python3 make g++ && ln -sf python3 /usr/bin/python
 
 RUN npm install -g pnpm
 COPY package.json pnpm-lock.yaml ./
 
-# 2. FIX: Force better-sqlite3 to compile from source during install
+# Install deps (Fix #2 from before)
 RUN pnpm install --frozen-lockfile --config.build-from-source=better-sqlite3
 
 COPY . .
 
-# (Optional) Explicitly rebuild it just to be absolutely safe
-RUN pnpm rebuild better-sqlite3
+# --- NEW FIX START ---
+# Create the data directory so the build doesn't crash when initializing the DB
+RUN mkdir -p data
+# --- NEW FIX END ---
 
 RUN pnpm run build
 RUN pnpm prune --prod
@@ -21,8 +23,7 @@ RUN pnpm prune --prod
 FROM node:22-alpine
 WORKDIR /app
 
-# 3. FIX: Install libstdc++ in the runner. 
-# The builder has it (via g++), but your final image is fresh and needs this to run the C++ code.
+# Runtime dependencies (Fix #3 from before)
 RUN apk add --no-cache libstdc++
 
 COPY --from=builder /app/build build/
